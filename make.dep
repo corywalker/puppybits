@@ -1,0 +1,23 @@
+# -*- mode: makefile; -*-
+
+# Rules to auto-build dependencies
+# include as last file
+
+depend:
+	-rm .depend
+	$(MAKE) .depend
+
+# -M is a nice feature of gcc which auto-generates dependency rules
+.depend: $(SRCS)
+	@echo Generating dependencies
+	@rm .depend >/dev/null 2>&1 ; \
+	for n in $(SRCS) ; do \
+		$(CC) -M $(CFLAGS) $$n >> .depend ; \
+	done
+
+clean::
+	-rm .depend
+
+# this generates a warning the first time it's run, but it
+# doesn't matter since everything has to be built too
+include	.depend

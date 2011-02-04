@@ -1,0 +1,130 @@
+
+PuppyBits
+=========
+
+This aims to be a small library of functions and tools for programming
+a BeagleBoard (or potentially other OMAP3 based systems) without an
+operating system.  Plus a few demos which use the library.
+
+It may or may not ever be in a fully compilable state, but may provide
+information on programming this devishly devious device regardless.
+
+At this point the code is stand-alone, and does not require a c
+library, but that may change in the future.
+
+Status
+------
+
+Some tools in tools/ and some routines in lib/ should compile, but
+beyond that you're on your own at this point.  Please do not ask.
+
+There are some demo programs in src/*/.  These compile to a '.img'
+file which Das U-Boot can load.
+
+License
+-------
+
+All source is covered by the GNU General Public License Version 3,
+unless otherwise indicated.  See the accompanying file COPYING.
+
+However, if you are working on a Free Software operating system which
+is distributed using a suitable license, and you wish to use any of
+the routines here (if/once they reach a suitable state), I will
+consider relicensing copies of the code appropriately to suit the
+given project.  Just ask.
+
+Note that the above offer does not constitute an exception under GNU
+GPL version 3 section 7.  Mainly because 'suitable license' is
+impossible to define.
+
+Building
+--------
+
+The build tools required are configured in 'make.cfg'.
+
+CC/LD/AS need to point to an ARM (cross) compiler.
+mkimage is from Das U-Boot.
+
+I'm currently cross-compiling, using the Code Sourcery `lite'
+compiler:
+
+$ arm-none-eabi-gcc --version
+arm-none-eabi-gcc (Sourcery G++ Lite 2009q1-161) 4.3.3
+
+It expects arm-none-eabi-gcc/ld/ar to be in the path.
+
+Use make to build everything that is buildable:
+
+$ make
+
+Running the Examples
+-------------------
+
+Example 1: Running from MMC card.
+
+It is assumed you're booting from NAND U-Boot, or have properly set-up
+the SD-CARD for MMC boot (MLO, etc).
+
+$ cp demo.img /media/SDCARD/
+
+Insert into the BeagleBoard, and boot to the Das U-Boot prompt:
+
+OMAP3 beagleboard.org # mmc init
+mmc1 is available
+OMAP3 beagleboard.org # fatload mmc 0 80300000 demo.img
+OMAP3 beagleboard.org # bootm 80300000
+
+## Booting kernel from Legacy Image at 80200000 ...
+   Image Name:   demo
+   Image Type:   ARM Linux Kernel Image (uncompressed)
+   Data Size:    59005 Bytes = 57.6 kB
+   Load Address: 80000000
+   Entry Point:  80008000
+   Verifying Checksum ... OK
+   Loading Kernel Image ... OK
+OK
+
+Starting kernel ...
+
+omap3: video_init()
+ ...
+
+Example 2: Serial upload.
+
+I have a serial console connected to my workstaiton, I upload the
+images using y-modem in minicom (you need to install the lrzsz
+package).  For small images this is a lot easier than mucking about
+with linux's crappy and slow SD card support or the flimsy SD slot on
+the BeagleBoard.  I couldn't get the serial-usb u-boot to work, but
+that's an option if you can.
+
+OMAP3 beagleboard.org # loady
+## Ready for binary (ymodem) download to 0x80200000 at 115200 bps... 
+
+>* at this point in minicom you do ctrl-a s, select y-modem, <*
+>* and then select 'demo.img' from the filesystem            <*
+
+Cmode, 464(SOH)/0(STX)/0(CAN) packets, 3 retries
+## Total Size      = 0x0000e6bd = 59069 Bytes
+OMAP3 beagleboard.org # bootm
+## Booting kernel from Legacy Image at 80200000 ...
+   Image Name:   demo
+   Image Type:   ARM Linux Kernel Image (uncompressed)
+   Data Size:    59005 Bytes = 57.6 kB
+   Load Address: 80000000
+   Entry Point:  80008000
+   Verifying Checksum ... OK
+   Loading Kernel Image ... OK
+OK
+
+Starting kernel ...
+
+omap3: video_init()
+ ...
+
+This can also be automated using a script.
+
+Contact
+-------
+
+I may be contacted through gmail with the username notzed.
