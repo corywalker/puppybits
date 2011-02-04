@@ -7,6 +7,7 @@
 
 #include "pbits.h"
 #include "graphics.h"
+#include "gpio.h"
 
 #include "omap3-system.h"
 #include "omap3-scd.h"

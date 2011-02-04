@@ -9,7 +9,8 @@ SRCS=video.c interrupts.c debug.c debugmon.c graphics.c font-misc-fixed.c \
 	neon.c \
 	mmu-simple.c \
 	bus_i2c.c \
-	pmon.c
+	pmon.c \
+	gpio.c
 ASM=exceptions.S fill-565.S
 OBJS=$(SRCS:.c=.o) $(ASM:.S=.o)
 

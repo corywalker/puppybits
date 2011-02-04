@@ -148,11 +148,4 @@
 #define reg16w(b, r, v) (*((volatile uint16_t *)((b)+(r))) = (v))
 #define reg16s(b, r, m, v) reg16w(b, r, (reg16r(b, r) & ~(m)) | ((v) & (m)))
 
-// turn leds on/off
-#define LED0 0x00200000
-#define LED1 0x00400000
-
-#define LEDS_OFF(x) reg32w(0x49056090, 0, x)
-#define LEDS_ON(x) reg32w(0x49056094, 0, x)
-
 #endif

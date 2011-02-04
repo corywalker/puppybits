@@ -41,20 +41,12 @@ void pulse_leds(void) {
 	bus_i2c_write8(base, SCDA_LED, SCD_LEDEN, SCD_LEDBON | SCD_LEDBPWM);
 
 	float a = 0.0;
+	unsigned char v = 0;
 	while (1) {
-		int v;
-
-		if (a > pi)
-			v = 64 - (int)(sine( a-pi ) * 64);
-		else
-			v = (int)(sine( a ) * 64 + 64);
-
-		a += 0.1;
-		if (a > 2 * pi)
-			a -= 2* pi;
-
+	    int delay = 240;
+	    v += 1;
 		bus_i2c_write8(base, SCDA_LED, SCD_PWMBOFF, v);
-		ksleep(100);
+		ksleep(delay);
 	}
 }
 
